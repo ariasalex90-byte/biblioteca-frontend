@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Cristiana – Iglesia Bautista Valle de Josafat</title>
+  <style>
+    /* ═══════════════════════════════════════════════
+       VARIABLES – Colores extraídos del logo de la iglesia
+       ═══════════════════════════════════════════════ */
+    :root {
+      --verde-1:   #1e5e28;   /* verde oscuro principal */
+      --verde-2:   #2e7a38;   /* verde medio */
+      --verde-3:   #4a9e54;   /* verde claro */
+      --verde-4:   #7cc47f;   /* verde muy claro */
+      --crema:     #f2eccb;   /* fondo crema */
+      --crema-2:   #e8e0a8;   /* crema más oscuro */
+      --dorado:    #e8a820;   /* dorado para estrellas */
+      --blanco:    #ffffff;
+      --texto:     #152a18;   /* texto oscuro verde */
+      --texto-mid: #3a6040;   /* texto medio */
+      --texto-lt:  #6a8a6e;   /* texto suave */
+      --borde:     #c0d8c4;   /* bordes suaves */
+      --shadow:    0 4px 16px rgba(30,94,40,.12);
+      --shadow-lg: 0 12px 40px rgba(30,94,40,.22);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Georgia, sans-serif;
+      background: var(--crema);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════════════ */
+    header {
+      background: linear-gradient(135deg, var(--verde-1) 0%, var(--verde-2) 100%);
+      color: var(--blanco);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.15);
+    }
+
+    .church-logo {
+      width: 70px; height: 70px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.3));
+    }
+
+    .church-info h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      color: var(--crema);
+      line-height: 1.2;
+    }
+    .church-info h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--blanco);
+      letter-spacing: 1px;
+    }
+    .church-info p {
+      font-size: .8rem;
+      color: var(--verde-4);
+      margin-top: .15rem;
+      font-style: italic;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: .8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: .75rem 2rem;
+      background: rgba(0,0,0,.12);
+    }
+
+    .search-box {
+      padding: .55rem 1.1rem;
+      border-radius: 25px;
+      border: 2px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.15);
+      color: var(--blanco);
+      font-size: .95rem;
+      width: 280px;
+      outline: none;
+      transition: all .25s;
+    }
+    .search-box::placeholder { color: rgba(255,255,255,.6); }
+    .search-box:focus {
+      border-color: var(--verde-4);
+      background: rgba(255,255,255,.22);
+    }
+
+    .count-badge {
+      background: var(--dorado);
+      color: var(--texto);
+      padding: .35rem .9rem;
+      border-radius: 25px;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .btn-header {
+      padding: .5rem 1.1rem;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,.5);
+      background: transparent;
+      color: var(--blanco);
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .2s;
+      font-weight: 600;
+    }
+    .btn-header:hover {
+      background: var(--blanco);
+      color: var(--verde-1);
+      border-color: var(--blanco);
+    }
+
+    /* ═══════════════════════════════════════════════
+       GRID DE LIBROS
+       ═══════════════════════════════════════════════ */
+    main { padding: 1.5rem 2rem 3rem; max-width: 1400px; margin: 0 auto; }
+
+    .section-title {
+      font-size: 1rem;
+      color: var(--texto-mid);
+      margin-bottom: 1.2rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--verde-3);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-title::before {
+      content: '';
+      width: 4px; height: 20px;
+      background: var(--verde-1);
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .book-card {
+      background: var(--blanco);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--borde);
+    }
+    .book-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--verde-3);
+    }
+
+    .book-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      background: var(--crema-2);
+      display: block;
+    }
+
+    .book-info {
+      padding: .65rem .75rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+    }
+    .book-num  { font-size: .68rem; color: var(--verde-3); font-weight: 700; }
+    .book-title{ font-size: .82rem; font-weight: 700; line-height: 1.3; color: var(--texto); }
+    .book-author{ font-size: .73rem; color: var(--texto-lt); }
+
+    .book-stars {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      margin-top: .3rem;
+    }
+    .stars-display { color: var(--dorado); font-size: .85rem; letter-spacing: 1px; }
+    .stars-count   { font-size: .68rem; color: var(--texto-lt); }
+
+    .no-results {
+      text-align: center;
+      color: var(--texto-lt);
+      padding: 4rem;
+      grid-column: 1/-1;
+      font-size: 1rem;
+    }
+
+    /* ═══════════════════════════════════════════════
+       OVERLAY BASE
+       ═══════════════════════════════════════════════ */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,50,22,.75);
+      z-index: 500;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+    }
+    .overlay.active { display: flex; }
+
+    .modal {
+      background: var(--blanco);
+      border-radius: 18px;
+      max-width: 600px;
+      width: 100%;
+      margin: auto;
+      box-shadow: 0 24px 70px rgba(0,0,0,.35);
+      animation: popUp .22s ease;
+      border: 1px solid var(--borde);
+    }
+    @keyframes popUp {
+      from { opacity: 0; transform: translateY(20px) scale(.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       MODAL DE DETALLE DEL LIBRO
+       ═══════════════════════════════════════════════ */
+    #bookModal .modal { max-width: 640px; }
+
+    .modal-cover {
+      width: 100%; max-height: 320px;
+      object-fit: contain;
+      border-radius: 18px 18px 0 0;
+      background: var(--crema-2);
+      display: block;
+    }
+
+    .modal-body { padding: 1.4rem 1.6rem; }
+
+    .modal-body h2 {
+      color: var(--verde-1);
+      font-size: 1.3rem;
+      line-height: 1.3;
+      margin-bottom: .25rem;
+    }
+    .modal-author {
+      color: var(--verde-3);
+      font-size: .9rem;
+      font-style: italic;
+      margin-bottom: .9rem;
+    }
+    .modal-summary {
+      font-size: .9rem;
+      line-height: 1.7;
+      color: var(--texto-mid);
+      margin-bottom: 1rem;
+    }
+
+    .section-label {
+      font-size: .72rem;
+      font-weight: 800;
+      color: var(--verde-1);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: .5rem;
+    }
+
+    .aspects-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin-bottom: 1.2rem;
+    }
+    .aspects-list li {
+      font-size: .85rem;
+      padding: .45rem .8rem;
+      background: #f0f8f1;
+      border-radius: 8px;
+      border-left: 3px solid var(--verde-3);
+      color: var(--texto-mid);
+      line-height: 1.45;
+    }
+
+    /* Rating summary en modal */
+    .rating-summary {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      padding: .8rem 1rem;
+      background: #fdf8ec;
+      border-radius: 10px;
+      border: 1px solid #f0d88a;
+      margin-bottom: 1.2rem;
+    }
+    .rating-big {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--verde-1);
+      line-height: 1;
+    }
+    .rating-stars-big { color: var(--dorado); font-size: 1.2rem; }
+    .rating-info small { font-size: .75rem; color: var(--texto-lt); display: block; }
+
+    /* Formulario de calificación */
+    .rate-section {
+      background: #f5faf5;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .stars-input {
+      display: flex;
+      gap: .3rem;
+      margin: .5rem 0 .8rem;
+    }
+    .stars-input span {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #d0d0d0;
+      transition: color .15s, transform .1s;
+      line-height: 1;
+      user-select: none;
+    }
+    .stars-input span.active { color: var(--dorado); }
+    .stars-input span:hover  { transform: scale(1.15); }
+
+    .rate-input {
+      width: 100%;
+      padding: .5rem .8rem;
+      border: 1.5px solid var(--borde);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: .88rem;
+      color: var(--texto);
+      background: var(--blanco);
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: .6rem;
+    }
+    .rate-input:focus { border-color: var(--verde-3); }
+    textarea.rate-input { resize: vertical; min-height: 70px; }
+
+    .btn-rate {
+      padding: .5rem 1.2rem;
+      background: var(--verde-2);
+      color: var(--blanco);
+      border: none;
+      border-radius: 8px;
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-rate:hover { background: var(--verde-1); }
+    .btn-rate:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* Comentarios */
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+      margin-bottom: 1.2rem;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    .comment-item {
+      background: var(--crema);
+      border-radius: 10px;
+      padding: .7rem .9rem;
+      border-left: 3px solid var(--verde-4);
+    }
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .3rem;
+    }
+    .comment-autor { font-size: .8rem; font-weight: 700; color: var(--verde-1); }
+    .comment-stars { color: var(--dorado); font-size: .8rem; }
+    .comment-fecha { font-size: .68rem; color: var(--texto-lt); }
+    .comment-texto { font-size: .85rem; color: var(--texto-mid); line-height: 1.5; }
+    .no-comments   { font-size: .82rem; color: var(--texto-lt); font-style: italic; text-align: center; padding: .8rem; }
+
+    /* Botones de acción del modal */
+    .modal-actions {
+      display: flex;
+      gap: .7rem;
+      flex-wrap: wrap;
+      padding-top: .8rem;
+      border-top: 1px solid var(--borde);
+    }
+    .btn-reserve {
+      flex: 1;
+      padding: .7rem 1rem;
+      background: var(--verde-1);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-reserve:hover { background: var(--verde-2); }
+    .btn-close-modal {
+      padding: .7rem 1.2rem;
+      background: var(--crema-2);
+      color: var(--texto);
+      border: 1.5px solid var(--borde);
+      border-radius: 10px;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: background .2s;
+      font-weight: 600;
+    }
+    .btn-close-modal:hover { background: var(--borde); }
+
+    /* ═══════════════════════════════════════════════
+       MODAL DE RESERVA
+       ═══════════════════════════════════════════════ */
+    #reservaModal .modal { max-width: 460px; }
+
+    .modal-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--borde);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, var(--verde-1), var(--verde-2));
+      border-radius: 18px 18px 0 0;
+    }
+    .modal-header h3 { color: var(--blanco); font-size: 1.1rem; }
+    .btn-x {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.8);
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: .2rem .5rem;
+      border-radius: 6px;
+      line-height: 1;
+    }
+    .btn-x:hover { color: var(--blanco); background: rgba(255,255,255,.2); }
+
+    .form-body { padding: 1.2rem 1.4rem; }
+
+    .book-badge {
+      background: #f0f8f1;
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+      padding: .75rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .book-badge strong { color: var(--verde-1); font-size: .9rem; display: block; }
+    .book-badge span   { color: var(--texto-lt); font-size: .8rem; }
+
+    .form-group { margin-bottom: .85rem; }
+    .form-group label {
+      display: block;
+      font-size: .75rem;
+      color: var(--texto-mid);
+      margin-bottom: .3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: .6rem .85rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--borde);
+      background: var(--blanco);
+      color: var(--texto);
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s;
+      font-family: inherit;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--verde-3); }
+    .form-group textarea { resize: vertical; min-height: 75px; }
+    .required { color: #c0392b; }
+
+    .btn-submit {
+      width: 100%;
+      padding: .75rem;
+      background: var(--verde-1);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: .5rem;
+    }
+    .btn-submit:hover { background: var(--verde-2); }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* ═══════════════════════════════════════════════
+       PANEL DE ADMINISTRACIÓN
+       ═══════════════════════════════════════════════ */
+    #adminPanel {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--crema);
+      z-index: 800;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--verde-1);
+    }
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .admin-header h2 { color: var(--verde-1); font-size: 1.5rem; }
+    .admin-header-left p { font-size: .85rem; color: var(--texto-lt); }
+
+    .admin-actions { display: flex; gap: .7rem; flex-wrap: wrap; }
+    .btn-admin-action {
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--borde);
+      background: var(--blanco);
+      color: var(--verde-1);
+      font-size: .85rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .btn-admin-action:hover { background: var(--verde-1); color: var(--blanco); border-color: var(--verde-1); }
+    .btn-close-admin {
+      padding: .5rem 1.2rem;
+      background: var(--verde-1);
+      color: var(--blanco);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+    .btn-close-admin:hover { background: var(--verde-2); }
+
+    .admin-stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: .85rem 1.3rem;
+      min-width: 130px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .stat-num   { font-size: 1.9rem; font-weight: 800; color: var(--verde-1); }
+    .stat-label { font-size: .72rem; color: var(--texto-lt); margin-top: .15rem; }
+
+    .reservas-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+      background: var(--blanco);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .reservas-table th {
+      background: var(--verde-1);
+      color: var(--blanco);
+      padding: .75rem 1rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .reservas-table td {
+      padding: .7rem 1rem;
+      border-bottom: 1px solid var(--borde);
+      vertical-align: middle;
+      color: var(--texto);
+    }
+    .reservas-table tr:last-child td { border-bottom: none; }
+    .reservas-table tr:hover td { background: #f5faf5; }
+
+    .estado-badge {
+      padding: .25rem .65rem;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .estado-pendiente  { background: #fff3cd; color: #856404; }
+    .estado-confirmada { background: #d1f0d8; color: #1a5c28; }
+    .estado-cancelada  { background: #fdd; color: #c0392b; }
+
+    .btn-tbl {
+      padding: .28rem .65rem;
+      border-radius: 6px;
+      border: none;
+      font-size: .75rem;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: .25rem;
+      transition: opacity .2s;
+    }
+    .btn-tbl:hover { opacity: .8; }
+    .btn-confirmar { background: #d1f0d8; color: #1a5c28; }
+    .btn-cancelar  { background: #fdd;    color: #c0392b; }
+    .btn-eliminar  { background: #eee;    color: #555; }
+
+    /* Login de admin */
+    .admin-login-wrap {
+      max-width: 380px;
+      margin: 5rem auto;
+      background: var(--blanco);
+      border-radius: 18px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--borde);
+    }
+    .admin-login-wrap .logo-small {
+      width: 80px;
+      margin: 0 auto 1rem;
+    }
+    .admin-login-wrap h3 {
+      color: var(--verde-1);
+      font-size: 1.2rem;
+      margin-bottom: .4rem;
+    }
+    .admin-login-wrap p {
+      color: var(--texto-lt);
+      font-size: .82rem;
+      margin-bottom: 1.5rem;
+    }
+    .admin-login-wrap input {
+      width: 100%;
+      padding: .65rem 1rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--borde);
+      font-size: .95rem;
+      margin-bottom: .8rem;
+      outline: none;
+      color: var(--texto);
+      transition: border-color .2s;
+    }
+    .admin-login-wrap input:focus { border-color: var(--verde-3); }
+    .btn-login {
+      width: 100%;
+      padding: .7rem;
+      background: var(--verde-1);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background .2s;
+    }
+    .btn-login:hover { background: var(--verde-2); }
+    .login-error { color: #c0392b; font-size: .82rem; margin-top: .6rem; }
+
+    /* ═══════════════════════════════════════════════
+       TOAST
+       ═══════════════════════════════════════════════ */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .toast-msg {
+      padding: .8rem 1.3rem;
+      border-radius: 10px;
+      font-size: .88rem;
+      font-weight: 600;
+      animation: slideIn .3s ease;
+      max-width: 320px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .toast-success { background: var(--verde-1); color: var(--blanco); }
+    .toast-error   { background: #c0392b;        color: var(--blanco); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════ */
+    footer {
+      background: var(--verde-1);
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: .8rem;
+    }
+    footer strong { color: var(--blanco); }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .header-top { padding: .8rem 1rem; gap: .8rem; }
+      .church-logo { width: 50px; height: 50px; }
+      .church-info h2 { font-size: 1.1rem; }
+      .header-controls { padding: .6rem 1rem; }
+      .search-box { width: 100%; }
+      main { padding: 1rem; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .9rem; }
+      #adminPanel { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════ -->
+<header>
+  <div class="header-top">
+    <!-- Logo SVG aproximado al logo de la iglesia.
+         Para usar el logo real: guarda el archivo como 'logo.png' junto a catalogo.html
+         y cambia el SVG por: <img src="logo.png" class="church-logo" alt="Logo" /> -->
+    <svg class="church-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="58" fill="#f2eccb"/>
+      <!-- Cruz -->
+      <rect x="53" y="8"  width="14" height="52" rx="4" fill="#1e5e28"/>
+      <rect x="32" y="24" width="56" height="14" rx="4" fill="#1e5e28"/>
+      <!-- Adulto izquierdo -->
+      <circle cx="38" cy="73" r="7.5" fill="#2e7a38"/>
+      <path d="M28 96 Q38 82 48 96" fill="#2e7a38"/>
+      <!-- Adulto derecho -->
+      <circle cx="82" cy="73" r="7.5" fill="#2e7a38"/>
+      <path d="M72 96 Q82 82 92 96" fill="#2e7a38"/>
+      <!-- Niño centro -->
+      <circle cx="60" cy="79" r="6" fill="#4a9e54"/>
+      <path d="M52 96 Q60 85 68 96" fill="#4a9e54"/>
+      <!-- Biblia / base -->
+      <path d="M22 100 Q60 93 98 100 L98 112 Q60 105 22 112 Z" fill="#1e5e28" opacity=".7"/>
+    </svg>
+
+    <div class="church-info">
+      <h1>Iglesia Bautista Valle de Josafat</h1>
+      <h2>📚 Biblioteca Cristiana</h2>
+      <p>Recursos para el crecimiento espiritual y el conocimiento bíblico</p>
+    </div>
+  </div>
+
+  <div class="header-controls">
+    <input class="search-box" type="text" id="searchInput" placeholder="🔍  Buscar por título o autor…" />
+    <span class="count-badge" id="countBadge">47 libros</span>
+    <button class="btn-header" onclick="openAdmin()">⚙️ Administración</button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     GRID
+══════════════════════════════════════════════ -->
+<main>
+  <p class="section-title" id="sectionTitle">Todos los libros disponibles</p>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <strong>Iglesia Bautista Valle de Josafat</strong> · Biblioteca Cristiana<br>
+  <span id="footerCount">47</span> libros disponibles para reserva
+</footer>
+
+<!-- ══════════════════════════════════════════════
+     MODAL DETALLE DEL LIBRO
+══════════════════════════════════════════════ -->
+<div class="overlay" id="bookModal">
+  <div class="modal">
+    <img class="modal-cover" id="modalCover" src="" alt="" />
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <p class="modal-author" id="modalAuthor"></p>
+      <p class="modal-summary" id="modalSummary"></p>
+
+      <p class="section-label">✨ 3 Aspectos Importantes</p>
+      <ul class="aspects-list" id="modalAspects"></ul>
+
+      <!-- Resumen de calificación -->
+      <div class="rating-summary" id="ratingSummary">
+        <div class="rating-big" id="ratingAvg">–</div>
+        <div>
+          <div class="rating-stars-big" id="ratingStarsBig">☆☆☆☆☆</div>
+          <small id="ratingCount">Sin calificaciones aún</small>
+        </div>
+      </div>
+
+      <!-- Formulario calificar -->
+      <div class="rate-section">
+        <p class="section-label">⭐ Califica este libro</p>
+        <div class="stars-input" id="starsInput">
+          <span data-v="1">★</span>
+          <span data-v="2">★</span>
+          <span data-v="3">★</span>
+          <span data-v="4">★</span>
+          <span data-v="5">★</span>
+        </div>
+        <input  type="text"     id="rateNombre"    class="rate-input" placeholder="Tu nombre (opcional)" />
+        <textarea id="rateComentario" class="rate-input" placeholder="Deja un comentario (opcional)…"></textarea>
+        <button class="btn-rate" id="btnRate" onclick="submitRating()">Enviar calificación</button>
+      </div>
+
+      <!-- Comentarios anteriores -->
+      <p class="section-label" id="commentsLabel">💬 Comentarios</p>
+      <div class="comments-list" id="commentsList">
+        <p class="no-comments">Sé el primero en comentar este libro.</p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-reserve" id="btnReserve">🔖 Reservar este libro</button>
+        <button class="btn-close-modal" onclick="closeBookModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODAL RESERVA
+══════════════════════════════════════════════ -->
+<div class="overlay" id="reservaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🔖 Solicitar Reserva</h3>
+      <button class="btn-x" onclick="closeReservaModal()">✕</button>
+    </div>
+    <div class="form-body">
+      <div class="book-badge">
+        <strong id="reservaLibroTitulo">–</strong>
+        <span id="reservaLibroAutor">–</span>
+      </div>
+      <div class="form-group">
+        <label>Nombre completo <span class="required">*</span></label>
+        <input type="text"  id="rNombre"   placeholder="Tu nombre completo" />
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="rEmail"    placeholder="tu@correo.com" />
+      </div>
+      <div class="form-group">
+        <label>Teléfono / WhatsApp</label>
+        <input type="tel"   id="rTelefono" placeholder="+57 300 000 0000" />
+      </div>
+      <div class="form-group">
+        <label>Notas adicionales</label>
+        <textarea id="rNotas" placeholder="Fecha preferida, observaciones…"></textarea>
+      </div>
+      <button class="btn-submit" id="btnSubmitReserva" onclick="submitReserva()">
+        ✅ Confirmar Reserva
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PANEL DE ADMINISTRACIÓN
+══════════════════════════════════════════════ -->
+<div id="adminPanel">
+
+  <!-- Vista de login -->
+  <div id="adminLogin">
+    <div class="admin-login-wrap">
+      <svg class="logo-small" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="58" fill="#f2eccb"/>
+        <rect x="53" y="8"  width="14" height="52" rx="4" fill="#1e5e28"/>
+        <rect x="32" y="24" width="56" height="14" rx="4" fill="#1e5e28"/>
+        <circle cx="38" cy="73" r="7.5" fill="#2e7a38"/>
+        <path d="M28 96 Q38 82 48 96" fill="#2e7a38"/>
+        <circle cx="82" cy="73" r="7.5" fill="#2e7a38"/>
+        <path d="M72 96 Q82 82 92 96" fill="#2e7a38"/>
+        <circle cx="60" cy="79" r="6" fill="#4a9e54"/>
+        <path d="M52 96 Q60 85 68 96" fill="#4a9e54"/>
+        <path d="M22 100 Q60 93 98 100 L98 112 Q60 105 22 112 Z" fill="#1e5e28" opacity=".7"/>
+      </svg>
+      <h3>Administración</h3>
+      <p>Iglesia Bautista Valle de Josafat</p>
+      <input type="password" id="adminPass" placeholder="Contraseña de acceso"
+             onkeydown="if(event.key==='Enter') checkAdmin()" />
+      <button class="btn-login" onclick="checkAdmin()">Ingresar</button>
+      <p class="login-error" id="loginError"></p>
+    </div>
+  </div>
+
+  <!-- Contenido del panel -->
+  <div id="adminContent" style="display:none">
+    <div class="admin-header">
+      <div class="admin-header-left">
+        <div>
+          <h2>📋 Panel de Reservas</h2>
+          <p>Iglesia Bautista Valle de Josafat · Biblioteca Cristiana</p>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn-admin-action" onclick="loadReservas()">↻ Actualizar</button>
+        <a href="http://localhost:3001/api/reservas/export" style="text-decoration:none">
+          <button class="btn-admin-action">⬇ Exportar CSV</button>
+        </a>
+        <button class="btn-close-admin" onclick="closeAdmin()">✕ Cerrar</button>
+      </div>
+    </div>
+
+    <div class="admin-stats" id="adminStats"></div>
+
+    <div style="overflow-x:auto; border-radius:12px;">
+      <table class="reservas-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Libro</th>
+            <th>Solicitante</th>
+            <th>Contacto</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="reservasBody"></tbody>
+      </table>
+    </div>
+    <p id="noReservas" style="text-align:center;color:var(--texto-lt);padding:3rem;display:none">
+      No hay reservas registradas aún.
+    </p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  DATOS – 47 LIBROS
+// ══════════════════════════════════════════════════════════
+const BOOKS = [
+  { id:1,  file:"A0FB4010-D40C-4861-A875-F68F2433C272_1_201_a.jpeg",
+    title:"El Triunfo del Crucificado", author:"Erich Sauer",
+    summary:"Panorama del Nuevo Testamento que examina la obra redentora de Cristo en tres etapas: la redención de las naciones, la conversión de la Iglesia y la transformación del Universo. Una obra panorámica que cubre la Historia de la Salvación desde el principio del mundo hasta su consumación.",
+    aspects:["Visión escatológica y cósmica de la obra de Cristo","Estudio sistemático libro por libro del Nuevo Testamento","Enlaza la salvación individual con el propósito redentor universal"] },
+  { id:2,  file:"01294399-0A43-4765-AB54-CF3855D41977_1_105_c.jpeg",
+    title:"Estudios en las Evidencias Cristianas", author:"Alice E. Luce",
+    summary:"Manual apologético para el estudio de las pruebas que apoyan la fe cristiana, diseñado para fortalecer creyentes y responder con fundamento a los escépticos. Aborda la inspiración bíblica, la confiabilidad histórica de los Evangelios y las evidencias de la resurrección.",
+    aspects:["Apologética cristiana accesible y práctica","Defensa de la confiabilidad e inspiración bíblica","Evidencias históricas de la resurrección de Cristo"] },
+  { id:3,  file:"D8D90149-5C1D-4820-942B-9C332F0D8046_1_105_c.jpeg",
+    title:"Cómo Obtener la Plenitud del Poder", author:"R.A. Torrey",
+    summary:"Guía práctica sobre cómo el creyente puede experimentar el poder de Dios en su vida cristiana y servicio, enfocándose en el Espíritu Santo, el poder de la Palabra de Dios, la sangre de Cristo, la oración y la vida rendida.",
+    aspects:["El rol central del Espíritu Santo en la vida cristiana","El poder transformador de la oración ferviente","La vida rendida a Dios como condición del poder espiritual"] },
+  { id:4,  file:"09CD0E89-360C-471F-AE70-B2B5EF3E9341_1_105_c.jpeg",
+    title:"La Aurora de la Redención del Mundo", author:"Erich Sauer",
+    summary:"Estudio panorámico de la historia de la salvación en el Antiguo Testamento, desde la creación hasta los profetas, mostrando cómo cada etapa del AT apunta y prepara el camino para la venida de Cristo.",
+    aspects:["Historia de la salvación en el Antiguo Testamento","Tipos y profecías mesiánicas en el AT","Progresión de la revelación divina a través de los siglos"] },
+  { id:5,  file:"11378A5E-40D7-4B00-9EE2-8DA5743876B0_1_105_c.jpeg",
+    title:"El Revolucionario", author:"Aaron Espinoza",
+    summary:"Novela cristiana que narra la historia de un joven revolucionario que encuentra a Cristo y experimenta una transformación radical, enfrentando el conflicto entre la ideología política y la fe genuina.",
+    aspects:["Conversión en medio del conflicto social y político","El poder transformador del evangelio en contextos de violencia","Tensión entre ideología revolucionaria y la fe cristiana"] },
+  { id:6,  file:"19E650C5-8F23-4C41-BA23-D1AAD6426571_1_105_c.jpeg",
+    title:"Doce Cestas de Mendrugos", author:"Elisabeth Elliot",
+    summary:"Recopilación de reflexiones y meditaciones de la célebre misionera Elisabeth Elliot sobre la vida cristiana, la fe, el sufrimiento y la gracia de Dios en situaciones cotidianas. Una obra nacida de la experiencia profunda del dolor y la pérdida.",
+    aspects:["Reflexiones devotas desde la experiencia misionera auténtica","Fe íntegra en medio del dolor y la pérdida personal","Gracia divina manifestada en las circunstancias ordinarias"] },
+  { id:7,  file:"1CD6971C-87DB-4B11-AB22-67BC0B6BF452_1_102_a.jpeg",
+    title:"Los Últimos Tiempos", author:"W. Kraak",
+    summary:"Estudio bíblico profético que examina las señales del tiempo del fin según las Escrituras, analizando los eventos del Apocalipsis, los profetas del AT y su relación con los eventos del mundo contemporáneo.",
+    aspects:["Profecías bíblicas sobre los eventos del tiempo del fin","Interpretación y análisis de las señales de los tiempos","Esperanza cristiana frente al escenario escatológico"] },
+  { id:8,  file:"EAC8F496-B961-41E0-84F2-07B889C6A6F1_1_105_c.jpeg",
+    title:"Las Crónicas de Narnia", author:"C.S. Lewis",
+    summary:"Serie de siete novelas de fantasía que narran las aventuras en el mundo mágico de Narnia, creadas por C.S. Lewis como profundas alegorías de la fe cristiana, la redención y la lucha eterna entre el bien y el mal.",
+    aspects:["Alegoría cristiana del sacrificio y la resurrección en la figura de Aslan","Temas de redención, gracia y transformación del carácter","Apologética cristiana presentada en narrativa fantástica accesible"] },
+  { id:9,  file:"217687E7-9F35-474C-866D-61D055FF9EC6_1_105_c.jpeg",
+    title:"La Vida Cristiana Normal", author:"Watchman Nee",
+    summary:"Obra clásica de Watchman Nee que explica el mensaje central del Nuevo Testamento: la identificación del creyente con Cristo en su muerte y resurrección, y lo que significa vivir en victoria real sobre el pecado.",
+    aspects:["La co-crucifixión con Cristo como base de la victoria espiritual","Diferencia entre el 'yo que vive' y 'Cristo que vive en mí'","Vida victoriosa mediante la fe en la obra consumada de Cristo"] },
+  { id:10, file:"22767FDD-DCCE-4700-AD9F-9DD0FDEB886F_1_105_c.jpeg",
+    title:"La Agonía del Gran Planeta Tierra", author:"Hal Lindsey",
+    summary:"Bestseller profético que interpreta las profecías bíblicas a la luz de eventos contemporáneos, argumentando que el mundo se acerca a su fin según las señales del tiempo. Fue uno de los libros más vendidos de la década del 70.",
+    aspects:["Interpretación premilenialista de las profecías bíblicas","Israel reconstituido como señal profética central del fin","Análisis geopolítico y nuclear como cumplimiento de profecías"] },
+  { id:11, file:"22D77CB2-E297-489A-BB6F-57A93CA8912E_1_102_a.jpeg",
+    title:"Un Paso Más", author:"Joni Eareckson y Steve Estes",
+    summary:"Continuación de la historia de Joni Eareckson, quien quedó cuadripléjica tras un accidente, explorando su búsqueda de paz duradera, propósito genuino y madurez espiritual profunda.",
+    aspects:["Reflexión profunda sobre el sufrimiento y la soberanía de Dios","Crecimiento espiritual real en la adversidad extrema","Esperanza bíblica y propósito para personas con discapacidad"] },
+  { id:12, file:"27910FA7-8710-470E-911E-1DF67661247F_1_105_c.jpeg",
+    title:"El Evangelismo Personal", author:"Myer Pearlman",
+    summary:"Manual práctico sobre cómo compartir la fe cristiana individualmente, con métodos, actitudes y pasajes bíblicos para evangelizar de manera efectiva en el contexto cotidiano.",
+    aspects:["Métodos prácticos y bíblicos de evangelización personal","Uso estratégico de la Biblia en el testimonio","Cómo superar los obstáculos más frecuentes en el evangelismo"] },
+  { id:13, file:"2AFFD388-0B96-4CE1-B74D-37B06CED6F38_1_105_c.jpeg",
+    title:"Protegidos por Sus Manos", author:"B. Schlink",
+    summary:"Reflexiones devotas sobre la protección y el cuidado providencial de Dios sobre sus hijos, con meditaciones bíblicas para fortalecer la confianza y la fe en tiempos de prueba y peligro.",
+    aspects:["Seguridad espiritual en la providencia y protección divina","Confianza en Dios frente a la incertidumbre y el peligro","Meditaciones bíblicas devocionales de profundo consuelo"] },
+  { id:14, file:"E1013279-CCD7-40A2-A29B-47D00CF02D6F_1_105_c.jpeg",
+    title:"La Servidumbre del Yoga y las Filosofías Orientales", author:"Calvin Miller",
+    summary:"Análisis crítico desde la perspectiva cristiana del yoga y las filosofías orientales, examinando sus fundamentos espirituales, sus pretensiones y sus incompatibilidades fundamentales con la fe bíblica.",
+    aspects:["Crítica cristiana profunda de las religiones y filosofías orientales","Peligros espirituales del yoga como práctica de raíz religiosa","La cosmovisión bíblica como contraste con el misticismo oriental"] },
+  { id:15, file:"301C2C00-1B4A-4876-B8B4-E4D8D6CF5072_1_105_c.jpeg",
+    title:"¡Traicionado!", author:"Stan Telchin",
+    summary:"Testimonio autobiográfico de un exitoso empresario judío que reacciona con furor cuando su hija adulta se convierte al cristianismo, y que tras investigar las Escrituras, él mismo encuentra a Jesucristo como el Mesías prometido.",
+    aspects:["Conversión de un judío escéptico a través del estudio de las Escrituras","Jesús como cumplimiento de las profecías mesiánicas del AT","Reconciliación familiar y espiritual transformadora a través del evangelio"] },
+  { id:16, file:"37D2CD6E-64B5-4B5F-9413-D86D72497547_1_105_c.jpeg",
+    title:"Cuenta Regresiva al Armagedón", author:"Hal Lindsey",
+    summary:"Análisis profético de los eventos de la década de los 80 a la luz de las profecías bíblicas, argumentando que el mundo se dirige hacia la batalla final del Apocalipsis con urgencia creciente.",
+    aspects:["Profecías bíblicas aplicadas a los eventos del siglo XX","La amenaza nuclear como señal del juicio final","El papel profético de Israel y las naciones en el tiempo del fin"] },
+  { id:17, file:"3A0F7ACF-8709-4BCA-ADF2-474742938112_1_201_a.jpeg",
+    title:"Cómo Vivir en el Plano Superior", author:"Ruth Paxson",
+    summary:"Enseñanza sobre la vida victoriosa del creyente, explicando cómo elevarse sobre la mediocridad espiritual mediante la fe, la rendición total y el poder habilitador del Espíritu Santo.",
+    aspects:["Vida en la plenitud y el poder del Espíritu Santo","Superación de la vida carnal hacia la vida espiritual plena","Principios bíblicos prácticos para la vida victoriosa y consagrada"] },
+  { id:18, file:"3C6CA307-F451-4561-BBC0-D0D2BC7F87D9_1_105_c.jpeg",
+    title:"No Rehúses el Corregir", author:"Bruce A. Ray",
+    summary:"Guía bíblica sobre la disciplina de los hijos, basada en Proverbios 23:13, presentando la corrección amorosa como responsabilidad fundamental de los padres según los principios de la Palabra de Dios.",
+    aspects:["La disciplina bíblica como expresión de amor parental genuino","Contraste directo con las teorías permisivas de la psicología moderna","Proverbios como guía práctica para la educación cristiana de los hijos"] },
+  { id:19, file:"4021649C-2D1B-4403-BDA3-E5F847FAA1CC_1_105_c.jpeg",
+    title:"La Sangre de la Cruz", author:"Andrew Murray",
+    summary:"Meditaciones profundas sobre el significado y el poder de la sangre de Jesucristo derramada en la cruz, y su aplicación práctica diaria para la limpieza de conciencia, la libertad espiritual y la consagración.",
+    aspects:["El poder expiatorio y purificador de la sangre de Cristo","Limpieza de conciencia y santificación continua a través de la sangre","Acceso permanente a la presencia de Dios por el sacrificio de Cristo"] },
+  { id:20, file:"CD7BFC3F-CD45-4AF0-9CC0-4D94B1FEE544_1_105_c.jpeg",
+    title:"Los Adventistas del Séptimo Día y sus Doctrinas", author:"Rdo. José Girón",
+    summary:"Examen crítico y detallado de las doctrinas distintivas del adventismo desde una perspectiva evangélica, evaluando sus enseñanzas sobre el sábado, el estado del muerto, el juicio investigador y Elena de White.",
+    aspects:["Análisis doctrinal completo del adventismo del séptimo día","Comparación de sus enseñanzas con la ortodoxia evangélica bíblica","Evaluación rigurosa de sus doctrinas más controvertidas con las Escrituras"] },
+  { id:21, file:"47BDCB27-7907-478E-83BB-31557D09446B_1_105_c.jpeg",
+    title:"Especulaciones sobre el Origen de la Vida", author:"Duane T. Gish",
+    summary:"Crítica científica de las teorías evolutivas sobre el origen de la vida, presentando evidencias para el diseño inteligente y la creación bíblica desde la perspectiva de la bioquímica y la paleontología.",
+    aspects:["Crítica científica a los experimentos evolutivos sobre el origen de la vida","Evidencias bioquímicas para el diseño inteligente","Defensa académica del creacionismo bíblico con argumentos científicos"] },
+  { id:22, file:"4C5F763A-1412-42FA-ABF0-83E052E082D6_1_102_a.jpeg",
+    title:"La Liberación del Planeta Tierra", author:"Hal Lindsey",
+    summary:"Tercera obra profética de Lindsey que examina el papel de Satanás en la historia humana y los eventos finales que culminarán en la liberación definitiva del planeta cuando Cristo establezca su reinado.",
+    aspects:["El papel activo de Satanás en la historia de la humanidad","La batalla espiritual cósmica que precede al fin de los tiempos","El milenio como liberación definitiva bajo el reinado de Cristo"] },
+  { id:23, file:"5DF2B0A3-2A79-471A-8D17-1C7FBAEF0DB8_1_105_c.jpeg",
+    title:"Capacitado para Orientar", author:"Jay E. Adams",
+    summary:"Libro fundacional de la consejería noutética (bíblica), argumentando que la Escritura provee todo lo necesario para el cuidado pastoral de almas, y presentando métodos prácticos de orientación bíblica.",
+    aspects:["La Biblia como suficiente y competente para toda consejería","Fundamentos del modelo noutético de consejería bíblica pastoral","Crítica rigurosa del psicoanálisis y la psicología secular desde la Biblia"] },
+  { id:24, file:"9B847859-A220-4B81-A887-441509D67FD1_1_105_c.jpeg",
+    title:"Hambre Oculta", author:"Pablo Sheetz",
+    summary:"Reflexión sobre la necesidad espiritual profunda del ser humano, explorando cómo el vacío interior que muchos intentan llenar con distintos sustitutos sólo puede satisfacerse con una relación auténtica con Cristo.",
+    aspects:["La hambre espiritual como realidad universal del ser humano","El vacío existencial y su única solución verdadera en Cristo","Llamado urgente a la autenticidad en la vida espiritual"] },
+  { id:25, file:"B3B3D93F-F202-41D4-BEAD-D4E2BEE24EFB_1_201_a.jpeg",
+    title:"Dios: Yo Quiero Ser Cristiano", author:"J.I. Packer",
+    summary:"Introducción accesible a la fe cristiana que explica quién es Dios, qué significa creer en Jesucristo y cómo comenzar una vida cristiana auténtica, dirigida especialmente a quienes exploran el evangelio.",
+    aspects:["Presentación clara y accesible del mensaje del evangelio","La persona y obra de Jesucristo explicadas para el buscador","Pasos prácticos para iniciar y consolidar la vida cristiana"] },
+  { id:26, file:"60D67C85-0135-4990-A7DD-5E27ACE83DD5_1_105_c.jpeg",
+    title:"A través de la Biblia", author:"Myer Pearlman",
+    summary:"Guía de estudio que recorre libro por libro toda la Biblia, proveyendo contexto histórico, argumento central y temas principales de cada libro bíblico, ideal para el estudio sistemático de las Escrituras.",
+    aspects:["Recorrido sistemático de todos los libros de la Biblia","Contexto histórico y literario esencial de cada libro bíblico","Herramienta indispensable para el estudio bíblico organizado"] },
+  { id:27, file:"6928B600-D127-4CE9-B69C-8F95BA0F396F_1_105_c.jpeg",
+    title:"Joni", author:"Joni Eareckson",
+    summary:"Autobiografía de Joni Eareckson Tada, quien quedó cuadripléjica a los 17 años tras un accidente de buceo, narrando su lucha, depresión, y eventual fe renovada en la soberanía y bondad de Dios.",
+    aspects:["Testimonio poderoso de fe genuina en medio del sufrimiento extremo","La soberanía de Dios confrontada con las tragedias de la vida","Esperanza y propósito reales para personas con discapacidad física"] },
+  { id:28, file:"B33A38C4-E939-493B-957C-BE919846D5BB_1_105_c.jpeg",
+    title:"Mormonismo", author:"Dr. Walter Martin",
+    summary:"Análisis doctrinal crítico del mormonismo desde la perspectiva bíblica evangélica, examinando el Libro de Mormón, las doctrinas de la Iglesia SUD y sus fundamentales divergencias con el cristianismo histórico.",
+    aspects:["Origen histórico y teología del mormonismo analizados con rigor","Comparación sistemática con el cristianismo bíblico histórico","Respuesta evangélica fundamentada a las doctrinas y prácticas mormones"] },
+  { id:29, file:"6C69C996-65B1-462C-9C04-D2496FA72ED6_1_105_c.jpeg",
+    title:"¡Corre! Nicky ¡Corre!", author:"Nicky Cruz",
+    summary:"Autobiografía de Nicky Cruz, ex líder de una de las pandillas más violentas de Nueva York, que narra su dramática conversión a través del ministerio de David Wilkerson y su radical transformación de vida.",
+    aspects:["Testimonio impactante de conversión desde el crimen y la violencia urbana","El poder del evangelio para transformar vidas en los márgenes de la sociedad","El ministerio pionero de David Wilkerson en los barrios más peligrosos de NY"] },
+  { id:30, file:"6D48E728-0FEE-491E-A8D8-8415B506DAE5_1_102_a.jpeg",
+    title:"La Cruz en la Vida Cristiana Normal", author:"Watchman Nee",
+    summary:"Profundización en el tema de la cruz como principio central de la vida cristiana, explicando que la cruz no sólo nos salva sino que transforma continuamente el carácter y produce fruto espiritual genuino.",
+    aspects:["La cruz como principio de vida espiritual continua, no sólo de salvación","Muerte al yo como condición indispensable para fructificar para Dios","La cruz como el camino hacia la resurrección y la plenitud espiritual"] },
+  { id:31, file:"7CAF2E15-52F3-4C29-9207-1E7568AA680D_1_105_c.jpeg",
+    title:"Raimundo Lulio: Primer Misionero al Islam", author:"Samuel M. Zwemer",
+    summary:"Biografía del místico y misionero medieval Ramón Llull (1235-1316), quien dedicó toda su vida a la evangelización del mundo islámico y es considerado el pionero de la misión cristiana al Islam.",
+    aspects:["Pionero histórico de la misión cristiana al mundo islámico medieval","Vida de profunda devoción, erudición y eventual martirio misionero","Métodos innovadores de apologética cristiana frente al Islam del siglo XIII"] },
+  { id:32, file:"AD1E3664-2E39-4A62-B597-09F2BB7FFE78_1_105_c.jpeg",
+    title:"Cumbres de Inspiración", author:"Mrs. Charles E. Cowman",
+    summary:"Devocional diario que complementa 'Manantiales en el Desierto', ofreciendo meditaciones espirituales para cada día del año con citas selectas de grandes predicadores y escritores espirituales clásicos.",
+    aspects:["Devocional diario para nutrir y profundizar la vida espiritual","Sabiduría compilada de los más grandes predicadores y escritores clásicos","Meditaciones bíblicas que fortalecen la fe en la vida cotidiana"] },
+  { id:33, file:"8B044B1F-1DC5-4F62-877C-821CCF4B6611_1_102_a.jpeg",
+    title:"Milagros en la China", author:"Rosalind Goforth",
+    summary:"Relatos testimoniales de los extraordinarios milagros ocurridos durante el ministerio misionero de Jonathan y Rosalind Goforth en China, especialmente durante los avivamientos que experimentaron.",
+    aspects:["Testimonios auténticos y documentados de avivamiento y milagros en China","El poder de la oración persistente y ferviente en el campo misionero","Fe sobrenatural mantenida en contextos de persecución y peligro extremo"] },
+  { id:34, file:"8FB4A10A-13A6-4FDC-B55C-A41D83AA4BEE_1_102_a.jpeg",
+    title:"El Espíritu de Sun Myung Moon", author:"Zola Levitt",
+    summary:"Análisis crítico del movimiento Moon (Iglesia de la Unificación) desde perspectivas cristiana y judía, examinando las pretensiones mesiánicas de Moon y la teología de su movimiento pseudocristiano.",
+    aspects:["Análisis del moonismo como movimiento pseudocristiano y culto","Pretensiones mesiánicas de Moon confrontadas con la Biblia","Respuesta bíblica a las enseñanzas y prácticas de la Iglesia de la Unificación"] },
+  { id:35, file:"BA25C928-1941-4A04-91A0-F9CD7D4B4711_1_105_c.jpeg",
+    title:"Después de la Cruz y el Puñal", author:"David Wilkerson",
+    summary:"Continuación del ministerio de David Wilkerson entre pandillas y drogadictos de Nueva York, narrando cómo el evangelio siguió transformando vidas en los barrios más violentos de la ciudad.",
+    aspects:["La continuación del histórico ministerio Teen Challenge en Nueva York","El evangelio como poder real de transformación en zonas de violencia","Testimonios impactantes de liberación de adicciones y crimen organizado"] },
+  { id:36, file:"AA8D4B30-059B-47D5-A79E-15E146E49BA4_1_105_c.jpeg",
+    title:"Cristianismo Básico", author:"John R.W. Stott",
+    summary:"Introducción clásica al cristianismo que examina quién es Cristo, por qué murió, las evidencias de su resurrección y qué significa responder al llamado del evangelio. Una obra apologética de referencia.",
+    aspects:["Apologética evangélica accesible y convincente para el buscador moderno","La identidad divina de Jesucristo y las evidencias de su resurrección","El llamado práctico e ineludible a comprometerse personalmente con Cristo"] },
+  { id:37, file:"97C81D49-9693-450A-848D-2F0FDEB2D814_1_102_a.jpeg",
+    title:"Eventos del Porvenir", author:"J. Dwight Pentecost",
+    summary:"Estudio académico exhaustivo de la escatología bíblica desde perspectiva dispensacionalista premilenaria, examinando sistemáticamente las profecías sobre el futuro del mundo, Israel y la Iglesia.",
+    aspects:["Estudio sistemático y académico riguroso de toda la profecía bíblica","El papel central e ineludible de Israel en el plan profético de Dios","Perspectiva dispensacionalista sólida y documentada del tiempo del fin"] },
+  { id:38, file:"ACEA4570-E6C1-4222-93B9-8BA36EE3C7FC_1_105_c.jpeg",
+    title:"Señores de la Tierra", author:"Don Richardson",
+    summary:"Obra fundamental de missiología que estudia cómo Dios ha preparado en culturas no alcanzadas 'conceptos redentores' que facilitan la comprensión del evangelio en culturas aparentemente impermeables.",
+    aspects:["El concepto clave de 'conceptos redentores' en culturas no alcanzadas","Missiología práctica y transcultural para la evangelización mundial","La providencia de Dios preparando soberanamente culturas para el evangelio"] },
+  { id:39, file:"C0056548-A26F-4B40-9C08-496FB9A4D98C_1_105_c.jpeg",
+    title:"Manual de Evidencias Cristianas", author:"Warren A. Candler",
+    summary:"Compendio de argumentos y evidencias que apoyan la veracidad del cristianismo, abordando la inspiración bíblica, las profecías cumplidas, los milagros históricos y la resurrección de Cristo.",
+    aspects:["Defensa histórica y doctrinal sólida de la fe cristiana","Profecías bíblicas cumplidas como evidencia objetiva de la verdad","Argumentos sobre la inspiración divina y confiabilidad de las Escrituras"] },
+  { id:40, file:"C84C6C20-649D-48E4-8E75-14D1DB632D54_1_105_c.jpeg",
+    title:"Dispensacionalismo, Hoy", author:"Charles C. Ryrie",
+    summary:"Defensa y explicación completa del sistema teológico dispensacionalista, respondiendo a sus críticos y explicando sus premisas hermenéuticas, su historia y su relevancia para la correcta interpretación de la profecía bíblica.",
+    aspects:["Fundamentos bíblicos y hermenéuticos del sistema dispensacionalista","Historia y desarrollo del dispensacionalismo en la teología cristiana","Defensa rigurosa y académica frente a críticas de otros sistemas teológicos"] },
+  { id:41, file:"D250D200-3154-42CA-88A8-BFC26527E64E_1_105_c.jpeg",
+    title:"Manantiales en el Desierto", author:"Mrs. Charles E. Cowman",
+    summary:"Devocional clásico publicado en 1925, compilado por Lettie Cowman durante los años de grave enfermedad de su esposo, con meditaciones diarias que han consolado y fortalecido a millones de lectores en la adversidad.",
+    aspects:["Devocional clásico nacido del sufrimiento profundo y la fe perseverante","Citas preciosas de grandes predicadores del siglo XIX y XX","Consuelo bíblico profundo y sostenido para tiempos de prueba y tribulación"] },
+  { id:42, file:"DA7C05FE-47F8-43C5-92EA-AE63546D1456_1_105_c.jpeg",
+    title:"La Última Llamada", author:"Charles G. Finney",
+    summary:"Material de avivamiento basado en los sermones y enseñanzas de Charles Finney, el gran predicador del avivamiento del siglo XIX, sobre las condiciones necesarias para un avivamiento genuino de la Iglesia.",
+    aspects:["Llamado urgente al arrepentimiento genuino y al avivamiento de la Iglesia","Las condiciones bíblicas específicas para un avivamiento espiritual real","La influencia histórica y el legado de Finney en los avivamientos del siglo XIX"] },
+  { id:43, file:"E61FB18B-0DB3-4849-924C-ACC4529F2B6B_1_102_a.jpeg",
+    title:"Estudios sobre el Nuevo Testamento", author:"A.T. Robertson",
+    summary:"Obra de referencia del erudito A.T. Robertson que examina los escritos del Nuevo Testamento con atención al trasfondo histórico, el idioma griego original y la teología de cada texto.",
+    aspects:["Estudio académico del NT con base en el griego original","Contexto histórico y cultural del mundo del Nuevo Testamento","Obra de referencia indispensable para el estudio teológico serio"] },
+  { id:44, file:"E8D99FDE-08B3-451E-8D66-94B0430E71BC_1_105_c.jpeg",
+    title:"Transformados en su Semejanza", author:"Watchman Nee",
+    summary:"Enseñanza sobre la santificación y el proceso divino de ser transformados a la imagen de Cristo, explicando cómo el Espíritu Santo obra en el creyente para producir el carácter y la semejanza de Cristo.",
+    aspects:["El proceso divino de santificación y transformación del creyente","La obra específica del Espíritu Santo en la formación del carácter cristiano","El objetivo último de la vida cristiana: ser conformados a la imagen de Cristo"] },
+  { id:45, file:"F130573A-CE42-4319-8D7C-2DF209A172EC_1_105_c.jpeg",
+    title:"De Campeón de Boxeo a Discípulo de Cristo", author:"José Antonio Portillo",
+    summary:"Testimonio autobiográfico del boxeador español José Antonio Portillo, que narra su conversión al evangelio y la transformación radical de su vida desde la fama del deporte profesional hacia la fe en Cristo.",
+    aspects:["Testimonio de conversión desde el deporte profesional y la fama mundana","El poder del evangelio en ambientes seculares de prestigio y éxito","Nueva identidad y propósito de vida encontrados en Cristo Jesús"] },
+  { id:46, file:"F2AC1C81-EE44-4F1F-9E6A-F7DC7D11705B_1_102_a.jpeg",
+    title:"Profecía e Historia", author:"W. Graham Scroggie",
+    summary:"Estudio de la relación entre la profecía bíblica y su cumplimiento en la historia, examinando cómo las predicciones de los profetas bíblicos se han realizado con exactitud o se realizarán en el futuro.",
+    aspects:["Cumplimiento histórico verificable de profecías bíblicas con precisión","Metodología hermenéutica correcta para interpretar la profecía","La confiabilidad de la Biblia demostrada en el registro histórico objetivo"] },
+  { id:47, file:"F7B090F4-32B6-45E4-9401-F35D2FD87E3B_1_105_c.jpeg",
+    title:"Las Bases de la Fe Premilenial", author:"Charles C. Ryrie",
+    summary:"Exposición de los fundamentos bíblicos y hermenéuticos del premilenialismo, argumentando desde la Escritura por un reinado literal y futuro de Cristo en la tierra por mil años.",
+    aspects:["Fundamentos bíblicos sólidos del premilenialismo histórico","Las promesas del pacto a Israel como argumento central e irrenunciable","Hermenéutica literal como base indispensable del sistema premilenialista"] }
+];
+
+// ══════════════════════════════════════════════════════════
+//  ESTADO GLOBAL
+// ══════════════════════════════════════════════════════════
+const API = 'http://localhost:3001/api';
+let currentBook   = null;
+let allRatings    = {};   // { "1": { votos:[...], comentarios:[...] } }
+let selectedStars = 0;
+
+// ══════════════════════════════════════════════════════════
+//  UTILIDADES
+// ══════════════════════════════════════════════════════════
+function starsHtml(avg, size = '1rem') {
+  const full  = Math.round(avg);
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    html += `<span style="color:${i <= full ? 'var(--dorado)' : '#ccc'};font-size:${size}">★</span>`;
+  }
+  return html;
+}
+
+function bookAvg(id) {
+  const r = allRatings[String(id)];
+  if (!r || !r.votos.length) return null;
+  return r.votos.reduce((a,b) => a+b, 0) / r.votos.length;
+}
+
+async function fetchRatings() {
+  try {
+    const res = await fetch(`${API}/ratings`);
+    allRatings = await res.json();
+  } catch { /* servidor no disponible */ }
+}
+
+function showToast(msg, type = 'success') {
+  const c  = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = `toast-msg toast-${type}`;
+  el.textContent = msg;
+  c.appendChild(el);
+  setTimeout(() => el.remove(), 4500);
+}
+
+// ══════════════════════════════════════════════════════════
+//  RENDER GRID
+// ══════════════════════════════════════════════════════════
+function render() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const filtered = q
+    ? BOOKS.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
+    : [...BOOKS];
+
+  document.getElementById('countBadge').textContent =
+    `${filtered.length} libro${filtered.length !== 1 ? 's' : ''}`;
+  document.getElementById('sectionTitle').textContent =
+    q ? `Resultados para "${q}"` : 'Todos los libros disponibles';
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  if (!filtered.length) {
+    grid.innerHTML = '<p class="no-results">No se encontraron libros con ese criterio.</p>';
+    return;
+  }
+
+  filtered.forEach(book => {
+    const avg = bookAvg(book.id);
+    const starsEl = avg
+      ? `<div class="book-stars">
+           <span class="stars-display">${starsHtml(avg)}</span>
+           <span class="stars-count">(${allRatings[String(book.id)].votos.length})</span>
+         </div>`
+      : `<div class="book-stars"><span class="stars-count" style="font-style:italic">Sin calificar</span></div>`;
+
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    card.innerHTML = `
+      <img src="Fotos/${book.file}" alt="${book.title}" loading="lazy" />
+      <div class="book-info">
+        <span class="book-num">#${book.id}</span>
+        <span class="book-title">${book.title}</span>
+        <span class="book-author">${book.author}</span>
+        ${starsEl}
+      </div>`;
+    card.addEventListener('click', () => openBookModal(book));
+    grid.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  MODAL DETALLE
+// ══════════════════════════════════════════════════════════
+function openBookModal(book) {
+  currentBook   = book;
+  selectedStars = 0;
+
+  document.getElementById('modalCover').src = `Fotos/${book.file}`;
+  document.getElementById('modalTitle').textContent  = book.title;
+  document.getElementById('modalAuthor').textContent = book.author;
+  document.getElementById('modalSummary').textContent = book.summary;
+  document.getElementById('modalAspects').innerHTML =
+    book.aspects.map(a => `<li>${a}</li>`).join('');
+
+  document.getElementById('rateNombre').value       = '';
+  document.getElementById('rateComentario').value   = '';
+  resetStarsInput();
+
+  updateRatingDisplay(book.id);
+  renderComments(book.id);
+
+  document.getElementById('btnReserve').onclick = () => {
+    closeBookModal();
+    openReservaModal(book);
+  };
+
+  document.getElementById('bookModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBookModal() {
+  document.getElementById('bookModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function updateRatingDisplay(id) {
+  const r   = allRatings[String(id)];
+  const avg = bookAvg(id);
+
+  if (avg) {
+    document.getElementById('ratingAvg').textContent      = avg.toFixed(1);
+    document.getElementById('ratingStarsBig').innerHTML   = starsHtml(avg, '1.3rem');
+    document.getElementById('ratingCount').textContent    = `${r.votos.length} calificación${r.votos.length !== 1 ? 'es' : ''}`;
+  } else {
+    document.getElementById('ratingAvg').textContent      = '–';
+    document.getElementById('ratingStarsBig').innerHTML   = '☆☆☆☆☆';
+    document.getElementById('ratingCount').textContent    = 'Sin calificaciones aún';
+  }
+}
+
+function renderComments(id) {
+  const r    = allRatings[String(id)];
+  const list = document.getElementById('commentsList');
+  const comentarios = r ? r.comentarios : [];
+
+  document.getElementById('commentsLabel').textContent =
+    `💬 Comentarios (${comentarios.length})`;
+
+  if (!comentarios.length) {
+    list.innerHTML = '<p class="no-comments">Sé el primero en comentar este libro.</p>';
+    return;
+  }
+
+  list.innerHTML = [...comentarios].reverse().map(c => {
+    const fecha = new Date(c.fecha).toLocaleDateString('es-CO', { year:'numeric', month:'short', day:'numeric' });
+    return `<div class="comment-item">
+      <div class="comment-header">
+        <span class="comment-autor">👤 ${c.nombre}</span>
+        <span class="comment-stars">${starsHtml(c.estrellas, '.85rem')}</span>
+      </div>
+      <div class="comment-fecha">${fecha}</div>
+      <p class="comment-texto">${c.texto}</p>
+    </div>`;
+  }).join('');
+}
+
+// Interacción con estrellas de input
+function resetStarsInput() {
+  selectedStars = 0;
+  document.querySelectorAll('#starsInput span').forEach(s => s.classList.remove('active'));
+}
+
+document.getElementById('starsInput').addEventListener('mouseover', e => {
+  if (!e.target.dataset.v) return;
+  const v = +e.target.dataset.v;
+  document.querySelectorAll('#starsInput span').forEach(s => {
+    s.classList.toggle('active', +s.dataset.v <= v);
+  });
+});
+document.getElementById('starsInput').addEventListener('mouseleave', () => {
+  document.querySelectorAll('#starsInput span').forEach(s => {
+    s.classList.toggle('active', +s.dataset.v <= selectedStars);
+  });
+});
+document.getElementById('starsInput').addEventListener('click', e => {
+  if (!e.target.dataset.v) return;
+  selectedStars = +e.target.dataset.v;
+  document.querySelectorAll('#starsInput span').forEach(s => {
+    s.classList.toggle('active', +s.dataset.v <= selectedStars);
+  });
+});
+
+async function submitRating() {
+  if (!selectedStars) { showToast('Selecciona una calificación (1-5 estrellas)', 'error'); return; }
+  if (!currentBook)   return;
+
+  const btn = document.getElementById('btnRate');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+
+  const payload = {
+    libro_id:    currentBook.id,
+    estrellas:   selectedStars,
+    nombre:      document.getElementById('rateNombre').value.trim(),
+    comentario:  document.getElementById('rateComentario').value.trim()
+  };
+
+  try {
+    const res  = await fetch(`${API}/ratings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      await fetchRatings();
+      updateRatingDisplay(currentBook.id);
+      renderComments(currentBook.id);
+      render();
+      document.getElementById('rateNombre').value     = '';
+      document.getElementById('rateComentario').value = '';
+      resetStarsInput();
+      showToast('✅ Calificación enviada. ¡Gracias!');
+    }
+  } catch {
+    showToast('El servidor no está disponible', 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enviar calificación';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  MODAL RESERVA
+// ══════════════════════════════════════════════════════════
+function openReservaModal(book) {
+  currentBook = book;
+  document.getElementById('reservaLibroTitulo').textContent = book.title;
+  document.getElementById('reservaLibroAutor').textContent  = book.author;
+  ['rNombre','rEmail','rTelefono','rNotas'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('reservaModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('rNombre').focus(), 100);
+}
+
+function closeReservaModal() {
+  document.getElementById('reservaModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+async function submitReserva() {
+  const nombre = document.getElementById('rNombre').value.trim();
+  if (!nombre) { showToast('Por favor ingresa tu nombre completo', 'error'); return; }
+
+  const btn = document.getElementById('btnSubmitReserva');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+
+  const payload = {
+    libro_id: currentBook.id, titulo: currentBook.title, autor: currentBook.author,
+    nombre,
+    email:    document.getElementById('rEmail').value.trim(),
+    telefono: document.getElementById('rTelefono').value.trim(),
+    notas:    document.getElementById('rNotas').value.trim()
+  };
+
+  try {
+    const res  = await fetch(`${API}/reservas`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      closeReservaModal();
+      showToast(`✅ Reserva #${data.id} registrada. Te contactaremos pronto.`);
+    } else {
+      showToast(data.error || 'Error al registrar la reserva', 'error');
+    }
+  } catch {
+    // Fallback localStorage
+    const reservas = JSON.parse(localStorage.getItem('ibvj_reservas') || '[]');
+    const r = { ...payload, id: Date.now(), fecha: new Date().toISOString(), estado: 'pendiente-local' };
+    reservas.push(r);
+    localStorage.setItem('ibvj_reservas', JSON.stringify(reservas));
+    closeReservaModal();
+    showToast('📦 Reserva guardada localmente (servidor no disponible)');
+  } finally {
+    btn.disabled = false; btn.textContent = '✅ Confirmar Reserva';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  PANEL ADMIN
+// ══════════════════════════════════════════════════════════
+const ADMIN_PASS = 'iglesia123';
+let adminUnlocked = false;
+
+function openAdmin() {
+  document.getElementById('adminPanel').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  if (!adminUnlocked) {
+    document.getElementById('adminLogin').style.display = 'block';
+    document.getElementById('adminContent').style.display = 'none';
+    setTimeout(() => document.getElementById('adminPass').focus(), 100);
+  } else {
+    loadReservas();
+  }
+}
+function closeAdmin() {
+  document.getElementById('adminPanel').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function checkAdmin() {
+  if (document.getElementById('adminPass').value === ADMIN_PASS) {
+    adminUnlocked = true;
+    document.getElementById('adminLogin').style.display  = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('adminPass').value = '';
+    loadReservas();
+  } else {
+    document.getElementById('loginError').textContent = '❌ Contraseña incorrecta';
+  }
+}
+
+async function loadReservas() {
+  let rows = [];
+  try {
+    const res = await fetch(`${API}/reservas`);
+    rows = await res.json();
+  } catch {
+    rows = JSON.parse(localStorage.getItem('ibvj_reservas') || '[]');
+  }
+
+  const pending   = rows.filter(r => r.estado?.startsWith('pendiente')).length;
+  const confirmed = rows.filter(r => r.estado === 'confirmada').length;
+  const canceled  = rows.filter(r => r.estado === 'cancelada').length;
+
+  document.getElementById('adminStats').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${rows.length}</div><div class="stat-label">Total</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#856404">${pending}</div><div class="stat-label">Pendientes</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--verde-1)">${confirmed}</div><div class="stat-label">Confirmadas</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#c0392b">${canceled}</div><div class="stat-label">Canceladas</div></div>
+  `;
+
+  const tbody = document.getElementById('reservasBody');
+  const noRes = document.getElementById('noReservas');
+
+  if (!rows.length) {
+    tbody.innerHTML = '';
+    noRes.style.display = 'block';
+    return;
+  }
+  noRes.style.display = 'none';
+
+  tbody.innerHTML = rows.map(r => {
+    const fecha   = new Date(r.fecha).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
+    const estado  = r.estado || 'pendiente';
+    const cls     = estado.startsWith('pendiente') ? 'pendiente' : estado === 'confirmada' ? 'confirmada' : 'cancelada';
+    const isLocal = estado.includes('local');
+    return `<tr>
+      <td><strong>${r.id}</strong></td>
+      <td><strong>${r.titulo}</strong><br><small style="color:var(--texto-lt)">${r.autor}</small></td>
+      <td>${r.nombre}</td>
+      <td>${r.email || '–'}<br><small>${r.telefono || ''}</small></td>
+      <td>${fecha}</td>
+      <td><span class="estado-badge estado-${cls}">${estado}</span></td>
+      <td>
+        ${!isLocal ? `
+          <button class="btn-tbl btn-confirmar" onclick="cambiarEstado(${r.id},'confirmada')">✓</button>
+          <button class="btn-tbl btn-cancelar"  onclick="cambiarEstado(${r.id},'cancelada')">✕</button>
+          <button class="btn-tbl btn-eliminar"  onclick="eliminarReserva(${r.id})">🗑</button>
+        ` : '–'}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function cambiarEstado(id, estado) {
+  try {
+    await fetch(`${API}/reservas/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado })
+    });
+    loadReservas();
+  } catch { showToast('Error de conexión', 'error'); }
+}
+
+async function eliminarReserva(id) {
+  if (!confirm('¿Eliminar esta reserva permanentemente?')) return;
+  try {
+    await fetch(`${API}/reservas/${id}`, { method: 'DELETE' });
+    loadReservas();
+  } catch { showToast('Error de conexión', 'error'); }
+}
+
+// ══════════════════════════════════════════════════════════
+//  EVENTOS
+// ══════════════════════════════════════════════════════════
+document.getElementById('searchInput').addEventListener('input', render);
+
+document.getElementById('bookModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('bookModal')) closeBookModal();
+});
+document.getElementById('reservaModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('reservaModal')) closeReservaModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeBookModal(); closeReservaModal(); }
+});
+
+// ══════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════
+(async () => {
+  await fetchRatings();
+  render();
+})();
+</script>
+</body>
+</html>
